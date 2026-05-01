@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nat Migliore — Critical Infrastructure Response</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --red: #c8191a;
+    --red-dim: #8b0f10;
+    --off-white: #f0ede6;
+    --warm-grey: #a8a49c;
+    --mid: #2a2520;
+    --mono: 'IBM Plex Mono', monospace;
+    --serif: 'DM Serif Display', serif;
+    --sans: 'Instrument Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--off-white);
+    font-family: var(--sans);
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.028;
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 3rem;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warm-grey);
+  }
+
+  .nav-logo span { color: var(--red); }
+
+  .nav-cta {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--off-white);
+    text-decoration: none;
+    border: 1px solid rgba(200,25,26,0.5);
+    padding: 0.55rem 1.2rem;
+    transition: all 0.2s;
+  }
+
+  .nav-cta:hover {
+    background: var(--red);
+    border-color: var(--red);
+    color: #fff;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 8rem 4rem 6rem 4rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 1px;
+    background: var(--red);
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(3.2rem, 6vw, 5.5rem);
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    margin-bottom: 2.5rem;
+    color: var(--off-white);
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--red);
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--warm-grey);
+    max-width: 38ch;
+    margin-bottom: 3rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--red);
+    text-decoration: none;
+    padding: 1rem 2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover { background: #e02020; transform: translateY(-1px); }
+
+  .btn-secondary {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--warm-grey);
+    background: transparent;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border: 1px solid #333;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover { border-color: var(--warm-grey); color: var(--off-white); }
+
+  /* Hero right — visual panel */
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 80% at 60% 40%, rgba(200,25,26,0.12) 0%, transparent 70%),
+      linear-gradient(135deg, transparent 40%, rgba(200,25,26,0.05) 100%);
+  }
+
+  .grid-visual {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(200,25,26,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,25,26,0.08) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 60% 50%, black 20%, transparent 80%);
+  }
+
+  .hero-stat-block {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .hero-number {
+    font-family: var(--serif);
+    font-size: 9rem;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(200,25,26,0.4);
+    letter-spacing: -0.04em;
+    display: block;
+  }
+
+  .hero-number-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--warm-grey);
+    margin-top: 0.5rem;
+  }
+
+  /* Vertical text */
+  .vertical-text {
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    transform-origin: center;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(168,164,156,0.3);
+    white-space: nowrap;
+  }
+
+  /* ─── TICKER ─── */
+  .ticker-wrap {
+    overflow: hidden;
+    background: var(--red);
+    padding: 0.85rem 0;
+    position: relative;
+  }
+
+  .ticker {
+    display: flex;
+    gap: 0;
+    animation: ticker 28s linear infinite;
+    width: max-content;
+  }
+
+  .ticker-item {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.9);
+    padding: 0 3rem;
+    white-space: nowrap;
+  }
+
+  .ticker-item::after {
+    content: '//';
+    margin-left: 3rem;
+    opacity: 0.4;
+  }
+
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ─── SERVICES ─── */
+  .section {
+    padding: 8rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 3rem;
+    align-items: end;
+    margin-bottom: 5rem;
+  }
+
+  .section-number {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--red);
+    padding-bottom: 0.3rem;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    line-height: 1.1;
+    color: var(--off-white);
+    border-bottom: 1px solid #222;
+    padding-bottom: 1rem;
+  }
+
+  .section-title em { font-style: italic; color: var(--warm-grey); }
+
+  /* Services grid */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: #1a1a1a;
+  }
+
+  .service-card {
+    background: var(--black);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--red);
+    transition: height 0.4s ease;
+  }
+
+  .service-card:hover { background: #0f0f0f; }
+  .service-card:hover::before { height: 100%; }
+
+  .service-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+
+  .service-name {
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    color: var(--off-white);
+    margin-bottom: 0.8rem;
+    line-height: 1.2;
+  }
+
+  .service-desc {
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: var(--warm-grey);
+    margin-bottom: 1.5rem;
+  }
+
+  .service-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+    border: 1px solid rgba(200,25,26,0.3);
+    padding: 0.25rem 0.6rem;
+  }
+
+  /* ─── HOW IT WORKS ─── */
+  .how-section {
+    background: #0d0d0d;
+    border-top: 1px solid #1a1a1a;
+    border-bottom: 1px solid #1a1a1a;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+
+  .steps::before {
+    content: '';
+    position: absolute;
+    top: 2.5rem;
+    left: 12.5%;
+    right: 12.5%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--red-dim), var(--red-dim), transparent);
+  }
+
+  .step {
+    padding: 2.5rem;
+    text-align: center;
+    position: relative;
+  }
+
+  .step-num {
+    width: 3rem;
+    height: 3rem;
+    border: 1px solid var(--red-dim);
+    background: var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--red);
+    margin: 0 auto 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-title {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    color: var(--off-white);
+    margin-bottom: 0.8rem;
+  }
+
+  .step-text {
+    font-size: 0.82rem;
+    color: var(--warm-grey);
+    line-height: 1.65;
+  }
+
+  /* ─── DOMAINS ─── */
+  .domains-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: #151515;
+  }
+
+  .domain-card {
+    background: var(--black);
+    padding: 3rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    align-start: start;
+    transition: background 0.3s;
+  }
+
+  .domain-card:hover { background: #0c0c0c; }
+
+  .domain-name {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    color: var(--off-white);
+    margin-bottom: 0.7rem;
+    line-height: 1.2;
+  }
+
+  .domain-desc {
+    font-size: 0.88rem;
+    color: var(--warm-grey);
+    line-height: 1.7;
+    max-width: 42ch;
+  }
+
+  .domain-arrow {
+    font-size: 1.4rem;
+    color: var(--red-dim);
+    align-self: center;
+    transition: transform 0.2s, color 0.2s;
+  }
+
+  .domain-card:hover .domain-arrow {
+    transform: translateX(4px);
+    color: var(--red);
+  }
+
+  /* ─── EXPERTISE STRIP ─── */
+  .expertise-strip {
+    padding: 5rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .expertise-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--warm-grey);
+    margin-bottom: 2.5rem;
+  }
+
+  .expertise-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .exp-item {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--warm-grey);
+    border: 1px solid #222;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s;
+  }
+
+  .exp-item:hover {
+    border-color: rgba(200,25,26,0.4);
+    color: var(--off-white);
+  }
+
+  .exp-item.highlight {
+    color: var(--red);
+    border-color: rgba(200,25,26,0.35);
+  }
+
+  /* ─── PROFILE ─── */
+  .profile-section {
+    background: #0d0d0d;
+    border-top: 1px solid #1a1a1a;
+  }
+
+  .profile-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 8rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8rem;
+    align-items: center;
+  }
+
+  .profile-text {}
+
+  .profile-headline {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    line-height: 1.15;
+    color: var(--off-white);
+    margin-bottom: 2rem;
+  }
+
+  .profile-body {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--warm-grey);
+    margin-bottom: 1.5rem;
+  }
+
+  .profile-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .stat {
+    border-left: 2px solid var(--red-dim);
+    padding-left: 1.2rem;
+  }
+
+  .stat-number {
+    font-family: var(--serif);
+    font-size: 2.8rem;
+    line-height: 1;
+    color: var(--off-white);
+  }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--warm-grey);
+    margin-top: 0.3rem;
+  }
+
+  /* Map visual */
+  .emea-visual {
+    position: relative;
+    height: 380px;
+  }
+
+  .emea-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(200,25,26,0.08) 0%, transparent 70%);
+    border: 1px solid #1e1e1e;
+  }
+
+  .emea-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .emea-word {
+    font-family: var(--serif);
+    font-size: 4rem;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(200,25,26,0.25);
+    letter-spacing: 0.2em;
+    display: block;
+  }
+
+  .emea-sub {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.3em;
+    color: var(--warm-grey);
+    text-transform: uppercase;
+  }
+
+  .ping {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--red);
+    border-radius: 50%;
+  }
+
+  .ping::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid var(--red);
+    animation: pingOut 2s ease-out infinite;
+  }
+
+  @keyframes pingOut {
+    0% { transform: translate(-50%,-50%) scale(1); opacity: 0.8; }
+    100% { transform: translate(-50%,-50%) scale(4); opacity: 0; }
+  }
+
+  /* ─── CONTACT ─── */
+  .contact-section {
+    padding: 0 4rem 8rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .contact-band {
+    background: var(--red);
+    padding: 5rem 5rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4rem;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-band::before {
+    content: 'SOS';
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--serif);
+    font-size: 14rem;
+    color: rgba(0,0,0,0.15);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .contact-headline {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 0.8rem;
+  }
+
+  .contact-sub {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
+    max-width: 45ch;
+  }
+
+  .contact-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .contact-link {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #fff;
+    background: rgba(0,0,0,0.25);
+    text-decoration: none;
+    padding: 0.9rem 1.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+
+  .contact-link:hover { background: rgba(0,0,0,0.4); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 2.5rem 4rem;
+    border-top: 1px solid #151515;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-name {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    color: #333;
+    text-transform: uppercase;
+  }
+
+  .footer-region {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    color: #2a2a2a;
+    text-transform: uppercase;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 7rem 1.5rem 4rem; }
+    .section { padding: 5rem 1.5rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .steps::before { display: none; }
+    .domains-grid { grid-template-columns: 1fr; }
+    .profile-inner { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 1.5rem; }
+    .emea-visual { display: none; }
+    .contact-band { grid-template-columns: 1fr; gap: 2rem; }
+    .contact-band::before { font-size: 6rem; }
+    .contact-section { padding: 0 1.5rem 5rem; }
+    footer { padding: 2rem 1.5rem; }
+    .expertise-strip { padding: 3rem 1.5rem; }
+    .section-header { grid-template-columns: 1fr; gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Nat Migliore<span> //</span> Critical Response</div>
+  <a href="#contact" class="nav-cta">Get Emergency Support</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Infrastructure Emergency Specialist · EMEA</div>
+    <h1>When systems<br>fail, <em>call<br>before</em> they do.</h1>
+    <p class="hero-sub">
+      20+ years resolving critical infrastructure failures across Europe. 
+      Available when production is down, SLAs are burning, and your team needs someone who has seen this before.
+    </p>
+    <div class="hero-actions">
+      <a href="mailto:info@natmigliore.com" class="btn-primary">
+        ↯ &nbsp; Request Emergency Response
+      </a>
+      <a href="#services" class="btn-secondary">
+        → &nbsp; View Capabilities
+      </a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="grid-visual"></div>
+    <div class="hero-stat-block">
+      <span class="hero-number">20+</span>
+      <span class="hero-number-label">Years in production-critical environments</span>
+    </div>
+    <div class="vertical-text">High Availability · Fault Tolerance · Business Continuity</div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">Storage Failure Response</span>
+    <span class="ticker-item">SAN / NAS Emergency</span>
+    <span class="ticker-item">Cluster Failover Recovery</span>
+    <span class="ticker-item">MetroCluster Triage</span>
+    <span class="ticker-item">VMware Production Incident</span>
+    <span class="ticker-item">BC / DR Activation</span>
+    <span class="ticker-item">Data Centre Stabilisation</span>
+    <span class="ticker-item">High Availability Hardening</span>
+    <span class="ticker-item">Fabric & Zoning Recovery</span>
+    <span class="ticker-item">Storage Failure Response</span>
+    <span class="ticker-item">SAN / NAS Emergency</span>
+    <span class="ticker-item">Cluster Failover Recovery</span>
+    <span class="ticker-item">MetroCluster Triage</span>
+    <span class="ticker-item">VMware Production Incident</span>
+    <span class="ticker-item">BC / DR Activation</span>
+    <span class="ticker-item">Data Centre Stabilisation</span>
+    <span class="ticker-item">High Availability Hardening</span>
+    <span class="ticker-item">Fabric & Zoning Recovery</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services" style="background: var(--black);">
+  <div class="section">
+    <div class="section-header reveal">
+      <div class="section-number">01 / Services</div>
+      <h2 class="section-title">What I do when <em>time is critical</em></h2>
+    </div>
+    <div class="services-grid reveal">
+
+      <div class="service-card">
+        <span class="service-icon">⚡</span>
+        <div class="service-name">Emergency Incident Response</div>
+        <div class="service-desc">Immediate remote engagement for production outages. I diagnose across storage, compute, fabric, and virtualisation layers simultaneously — cutting resolution time from days to hours.</div>
+        <div class="service-tags">
+          <span class="tag">P1 / P2 Outages</span>
+          <span class="tag">Root Cause</span>
+          <span class="tag">Remote / On-site</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <span class="service-icon">🔗</span>
+        <div class="service-name">SAN & Storage Crisis Resolution</div>
+        <div class="service-desc">Deep expertise in NetApp ONTAP, Brocade / Cisco fabric, LUN conflicts, multipath failures, and MetroCluster split-brain scenarios. I read logs others miss.</div>
+        <div class="service-tags">
+          <span class="tag">NetApp / ONTAP</span>
+          <span class="tag">Brocade / Cisco</span>
+          <span class="tag">MetroCluster</span>
+          <span class="tag">iSCSI / FC</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <span class="service-icon">🛡</span>
+        <div class="service-name">High Availability & Cluster Recovery</div>
+        <div class="service-desc">Failover analysis, Veritas Cluster Server triage, fault-tolerance re-establishment. When HA has failed to protect you, I find why and restore the safety net.</div>
+        <div class="service-tags">
+          <span class="tag">Veritas / VCS</span>
+          <span class="tag">Failover</span>
+          <span class="tag">BC / DR</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <span class="service-icon">🖥</span>
+        <div class="service-name">Virtualisation Environment Rescue</div>
+        <div class="service-desc">VMware vSphere production incidents, VM sprawl, storage bottlenecks, host connectivity loss. Full-stack visibility from hypervisor to physical fabric.</div>
+        <div class="service-tags">
+          <span class="tag">VMware vSphere</span>
+          <span class="tag">ESXi</span>
+          <span class="tag">VM Recovery</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <span class="service-icon">🔍</span>
+        <div class="service-name">Deep-Dive Forensic Analysis</div>
+        <div class="service-desc">Cross-vendor log correlation across non-homogeneous environments. I identify systemic bottlenecks and cascade failure chains — not just the symptom, but the sequence.</div>
+        <div class="service-tags">
+          <span class="tag">Log Analysis</span>
+          <span class="tag">Multi-vendor</span>
+          <span class="tag">Post-Incident Review</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <span class="service-icon">🔒</span>
+        <div class="service-name">Hardening & Resilience Audit</div>
+        <div class="service-desc">Post-crisis or proactive: I identify what is one failure away from an outage and implement fault-tolerance design before it becomes an emergency call at 2am.</div>
+        <div class="service-tags">
+          <span class="tag">Risk Reduction</span>
+          <span class="tag">Lifecycle Mgmt</span>
+          <span class="tag">Security Posture</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <div class="section">
+    <div class="section-header reveal">
+      <div class="section-number">02 / Process</div>
+      <h2 class="section-title">From first contact to <em>stabilisation</em></h2>
+    </div>
+    <div class="steps reveal">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-title">You make contact</div>
+        <div class="step-text">Email or phone. Describe the situation in one line — production down, cluster split, storage unavailable. I respond within the hour.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-title">Rapid triage call</div>
+        <div class="step-text">30-minute call to understand the environment, the blast radius, and the immediate risk. No forms, no bureaucracy.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-title">Remote engagement</div>
+        <div class="step-text">I connect to your environment and begin analysis. Cross-referencing logs, fabric, storage events — simultaneously, not sequentially.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-title">Resolution & report</div>
+        <div class="step-text">System stabilised. Clear post-incident documentation of root cause, resolution path, and recommended hardening steps.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOMAINS -->
+<section style="background: var(--black); padding: 0 0 0;">
+  <div class="section">
+    <div class="section-header reveal">
+      <div class="section-number">03 / Sectors</div>
+      <h2 class="section-title">Critical environments <em>I specialise in</em></h2>
+    </div>
+  </div>
+  <div class="domains-grid reveal">
+    <div class="domain-card">
+      <div>
+        <div class="domain-name">Healthcare & Medical Systems</div>
+        <div class="domain-desc">Where system downtime is measured in patient impact. Storage failures, cluster incidents, and application unavailability in regulated, 24×7 environments demand immediate resolution.</div>
+      </div>
+      <div class="domain-arrow">→</div>
+    </div>
+    <div class="domain-card">
+      <div>
+        <div class="domain-name">Financial Services & Trading</div>
+        <div class="domain-desc">Milliseconds matter. Infrastructure failures in trading platforms, core banking, and payment processing require someone who understands both the technical and business urgency.</div>
+      </div>
+      <div class="domain-arrow">→</div>
+    </div>
+    <div class="domain-card">
+      <div>
+        <div class="domain-name">Manufacturing & Supply Chain</div>
+        <div class="domain-desc">Production line halts triggered by ERP or MES infrastructure failures. Every hour of downtime has a direct, measurable cost. I minimise that window.</div>
+      </div>
+      <div class="domain-arrow">→</div>
+    </div>
+    <div class="domain-card">
+      <div>
+        <div class="domain-name">Enterprise Hosting & SaaS Platforms</div>
+        <div class="domain-desc">Multi-tenant hosted environments where a single infrastructure incident impacts dozens of customer SLAs simultaneously. Large-scale VM estates and SAN architectures.</div>
+      </div>
+      <div class="domain-arrow">→</div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERTISE STRIP -->
+<div class="expertise-strip reveal">
+  <div class="expertise-label">Full technology stack · 20+ years hands-on</div>
+  <div class="expertise-list">
+    <span class="exp-item highlight">NetApp ONTAP</span>
+    <span class="exp-item highlight">MetroCluster</span>
+    <span class="exp-item highlight">Brocade SAN</span>
+    <span class="exp-item highlight">Cisco Fabric</span>
+    <span class="exp-item highlight">VMware vSphere</span>
+    <span class="exp-item highlight">Veritas Cluster Server</span>
+    <span class="exp-item">IBM SAN / SVC</span>
+    <span class="exp-item">HP StorageWorks</span>
+    <span class="exp-item">Dell PowerEdge</span>
+    <span class="exp-item">RHEL / Windows Server</span>
+    <span class="exp-item">iSCSI / Fibre Channel</span>
+    <span class="exp-item">Multipath I/O</span>
+    <span class="exp-item">Soft Zoning / Trunking</span>
+    <span class="exp-item">ATTO FibreBridge</span>
+    <span class="exp-item">Commvault</span>
+    <span class="exp-item">NetBackup</span>
+    <span class="exp-item">Citrix</span>
+    <span class="exp-item">MobileIron</span>
+    <span class="exp-item">BC / DR Architecture</span>
+    <span class="exp-item">Capacity Planning</span>
+    <span class="exp-item">Incident Management</span>
+    <span class="exp-item">IoT / RFID</span>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<section class="profile-section">
+  <div class="profile-inner">
+    <div class="profile-text reveal">
+      <h3 class="profile-headline">An independent specialist with no corporate overhead — just resolution.</h3>
+      <p class="profile-body">
+        I am a freelance technical consultant, not a managed service provider. That means when you engage me, you get direct access to the person doing the work — someone who has spent over two decades inside the most complex enterprise infrastructure environments across the EMEA region.
+      </p>
+      <p class="profile-body">
+        I operate in English, Italian, French, and Spanish — which matters when a critical incident at a remote European data centre requires clear communication under pressure.
+      </p>
+      <div class="profile-stats">
+        <div class="stat">
+          <div class="stat-number">20+</div>
+          <div class="stat-label">Years enterprise infrastructure</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">EMEA</div>
+          <div class="stat-label">Active operational coverage</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Uptime record for retained clients</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">4</div>
+          <div class="stat-label">Languages · EN / IT / FR / ES</div>
+        </div>
+      </div>
+    </div>
+    <div class="emea-visual reveal">
+      <div class="emea-bg"></div>
+      <div class="emea-label">
+        <span class="emea-word">EMEA</span>
+        <span class="emea-sub">Operational Coverage</span>
+      </div>
+      <!-- Pings representing key locations -->
+      <div class="ping" style="top:32%; left:46%;"></div>
+      <div class="ping" style="top:28%; left:55%; animation-delay:0.6s;"></div>
+      <div class="ping" style="top:42%; left:60%; animation-delay:1.1s;"></div>
+      <div class="ping" style="top:38%; left:35%; animation-delay:0.3s;"></div>
+      <div class="ping" style="top:52%; left:52%; animation-delay:1.5s;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div id="contact" class="contact-section">
+  <div class="contact-band reveal">
+    <div>
+      <h3 class="contact-headline">System down?<br>Don't wait for a ticket.</h3>
+      <p class="contact-sub">
+        Critical infrastructure incidents don't respect business hours. Reach out directly — I respond to genuine emergencies within the hour, regardless of timezone.
+      </p>
+    </div>
+    <div class="contact-actions">
+      <a href="mailto:info@natmigliore.com" class="contact-link">
+        ✉ &nbsp; info@natmigliore.com
+      </a>
+      <a href="tel:+447482430680" class="contact-link">
+        ☎ &nbsp; +44 748 243 0680
+      </a>
+      <a href="https://uk.linkedin.com/in/natmigliore" target="_blank" class="contact-link">
+        in &nbsp; LinkedIn Profile
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Nat Migliore · natmigliore.com</div>
+  <div class="footer-region">London, UK · EMEA Operations</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Nav background on scroll
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.background = window.scrollY > 60
+      ? 'rgba(10,10,10,0.97)'
+      : 'linear-gradient(to bottom, rgba(10,10,10,0.95), transparent)';
+  });
+</script>
+</body>
+</html>
