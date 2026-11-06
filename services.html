@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nat Migliore — SME Solutions, IoT Dashboards & Cross-Border Field Service</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black: #0a0a0a;
+    --red: #c8191a;
+    --red-dim: #8b0f10;
+    --off-white: #f0ede6;
+    --warm-grey: #a8a49c;
+    --mono: 'IBM Plex Mono', monospace;
+    --serif: 'DM Serif Display', serif;
+    --sans: 'Instrument Sans', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--off-white);
+    font-family: var(--sans);
+    overflow-x: hidden;
+  }
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 3rem;
+    background: rgba(10,10,10,0.96);
+    border-bottom: 1px solid #1a1a1a;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warm-grey);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--red); }
+  .nav-links { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+  .nav-back {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--warm-grey);
+    text-decoration: none;
+    border: 1px solid #2a2a2a;
+    padding: 0.55rem 1rem;
+  }
+  .nav-back:hover { color: var(--off-white); border-color: var(--warm-grey); }
+  .nav-cta {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--red);
+    text-decoration: none;
+    padding: 0.55rem 1.2rem;
+  }
+
+  .page-hero {
+    padding: 10rem 4rem 5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    border-bottom: 1px solid #1a1a1a;
+  }
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 1px;
+    background: var(--red);
+  }
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.6rem, 5vw, 4.4rem);
+    line-height: 1.05;
+    margin-bottom: 1.8rem;
+    color: var(--off-white);
+  }
+  h1 em { font-style: italic; color: var(--red); }
+  .hero-sub {
+    font-size: 1.02rem;
+    line-height: 1.75;
+    color: var(--warm-grey);
+    max-width: 68ch;
+  }
+
+  .section {
+    padding: 6rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .section-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 3rem;
+    align-items: end;
+    margin-bottom: 4rem;
+  }
+  .section-number {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--red);
+    padding-bottom: 0.3rem;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    line-height: 1.1;
+    color: var(--off-white);
+    border-bottom: 1px solid #222;
+    padding-bottom: 1rem;
+  }
+  .section-title em { font-style: italic; color: var(--warm-grey); }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: #1a1a1a;
+  }
+  .service-card {
+    background: var(--black);
+    padding: 2.8rem;
+    position: relative;
+  }
+  .service-name {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    color: var(--off-white);
+    margin-bottom: 0.8rem;
+  }
+  .service-desc {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--warm-grey);
+    margin-bottom: 1.2rem;
+  }
+  .service-list {
+    list-style: none;
+    margin-bottom: 1.5rem;
+  }
+  .service-list li {
+    font-size: 0.85rem;
+    color: var(--off-white);
+    margin-bottom: 0.5rem;
+    padding-left: 1.1rem;
+    position: relative;
+  }
+  .service-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--red);
+  }
+  .service-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+    border: 1px solid rgba(200,25,26,0.3);
+    padding: 0.25rem 0.6rem;
+  }
+
+  /* Anonymized SME Reference Cases */
+  .cases-section {
+    background: #0d0d0d;
+    border-top: 1px solid #1a1a1a;
+    border-bottom: 1px solid #1a1a1a;
+  }
+  .cases-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .case-card {
+    background: var(--black);
+    border: 1px solid #1f1f1f;
+    border-left: 3px solid var(--red);
+    padding: 2.2rem;
+  }
+  .case-sector {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 0.7rem;
+  }
+  .case-title {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    color: var(--off-white);
+    margin-bottom: 0.8rem;
+  }
+  .case-desc {
+    font-size: 0.86rem;
+    line-height: 1.65;
+    color: var(--warm-grey);
+  }
+
+  .contact-section {
+    padding: 5rem 4rem 6rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .contact-band {
+    background: var(--red);
+    padding: 4rem 4.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 3rem;
+    align-items: center;
+  }
+  .contact-headline {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    color: #fff;
+    margin-bottom: 0.6rem;
+  }
+  .contact-sub { font-size: 0.9rem; color: rgba(255,255,255,0.8); max-width: 50ch; }
+  .contact-actions { display: flex; flex-direction: column; gap: 0.7rem; }
+  .contact-link {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #fff;
+    background: rgba(0,0,0,0.25);
+    text-decoration: none;
+    padding: 0.85rem 1.5rem;
+  }
+
+  footer {
+    padding: 2.5rem 4rem;
+    border-top: 1px solid #151515;
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .page-hero { padding: 8rem 1.5rem 3.5rem; }
+    .section, .contact-section { padding: 4rem 1.5rem; }
+    .services-grid, .cases-grid, .contact-band { grid-template-columns: 1fr; }
+    .section-header { grid-template-columns: 1fr; gap: 0.8rem; }
+  }
+
+  /* ─── A4 ECO-PRINT STYLESHEET ─── */
+  @page { size: A4 portrait; margin: 12mm 14mm; }
+  @media print {
+    html, body {
+      background: #ffffff !important;
+      color: #000000 !important;
+      font-size: 9.5pt !important;
+      line-height: 1.4 !important;
+    }
+    nav {
+      position: static !important;
+      background: transparent !important;
+      padding: 0 0 8pt 0 !important;
+      border-bottom: 2px solid #000 !important;
+      margin-bottom: 10pt !important;
+    }
+    .nav-links { display: none !important; }
+    .nav-logo, .nav-logo span { color: #000 !important; font-size: 11pt !important; font-weight: 700 !important; }
+    .page-hero, .section, .cases-section, .contact-section {
+      padding: 8pt 0 !important;
+      background: transparent !important;
+      border-color: #ccc !important;
+    }
+    .hero-tag, .section-number, .case-sector { color: #000 !important; font-weight: 700 !important; }
+    h1, h1 em, .section-title, .section-title em { color: #000 !important; font-size: 16pt !important; margin-bottom: 6pt !important; }
+    .hero-sub { color: #222 !important; max-width: 100% !important; }
+    .services-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 8pt !important; background: transparent !important; }
+    .cases-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 8pt !important; }
+    .service-card, .case-card {
+      background: #ffffff !important;
+      color: #000000 !important;
+      border: 1px solid #666 !important;
+      padding: 8pt 10pt !important;
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+    }
+    .service-name, .case-title { color: #000 !important; font-size: 11.5pt !important; }
+    .service-desc, .case-desc, .service-list li { color: #222 !important; font-size: 8.6pt !important; }
+    .tag { color: #000 !important; border: 1px solid #666 !important; font-size: 7.5pt !important; }
+    .contact-band {
+      background: #fff !important;
+      border: 2px solid #000 !important;
+      padding: 10pt !important;
+      break-inside: avoid !important;
+    }
+    .contact-headline, .contact-sub, .contact-link { color: #000 !important; background: transparent !important; }
+    .contact-link { border: 1px solid #000 !important; padding: 4pt 8pt !important; }
+    footer { border-top: 1px solid #000 !important; padding-top: 6pt !important; color: #000 !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Nat Migliore<span> //</span> SME, IoT &amp; Field Ops</a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-back">← Emergency Response Home</a>
+    <a href="#contact" class="nav-cta">Discuss a Project</a>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="hero-tag">Valtellina (Northern Italy) · Switzerland (90-Day Cross-Border Eligible) · UK &amp; EMEA</div>
+  <h1>Applied Innovation, <em>IoT Dashboards</em><br>&amp; Cross-Border Field Engineering.</h1>
+  <p class="hero-sub">
+    Alongside Enterprise P1 incident response, I partner with Small and Medium Enterprises (SMEs), industrial facilities, and startups to build resilient IT infrastructure, custom IoT telemetry dashboards, access security systems, and provide rapid on-site technical and electro-mechanical field support across Northern Italy and Switzerland.
+  </p>
+</header>
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-number">01 / Capabilities</div>
+    <h2 class="section-title">Practical solutions for <em>SMEs, Startups &amp; Field Ops</em></h2>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-name">IoT Telemetry &amp; Custom Dashboards</div>
+      <div class="service-desc">Independent prototyping and deployment of real-time dashboards connecting sensors and industrial equipment to clear operational views.</div>
+      <ul class="service-list">
+        <li>Environmental, power, and machine telemetry pipelines.</li>
+        <li>Real-time browser dashboards for production and facility monitoring.</li>
+        <li>Automated alerting and workflow orchestration (n8n) with full data sovereignty.</li>
+      </ul>
+      <div class="service-tags">
+        <span class="tag">IoT Sensors</span>
+        <span class="tag">Custom Dashboards</span>
+        <span class="tag">Workflow Automation</span>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-name">Industrial Automation &amp; Access Security</div>
+      <div class="service-desc">Integrating physical access security and industrial automation with reliable local network and server architectures.</div>
+      <ul class="service-list">
+        <li>RFID, smart-card, and automated gate/turnstile access control systems.</li>
+        <li>Endpoint and network security hardening for operational environments (OT/IT).</li>
+        <li>Local fault-tolerant controllers engineered to operate even during WAN outages.</li>
+      </ul>
+      <div class="service-tags">
+        <span class="tag">Access Control</span>
+        <span class="tag">RFID / Gates</span>
+        <span class="tag">Industrial Edge</span>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-name">Bespoke SME &amp; Startup Infrastructure</div>
+      <div class="service-desc">Enterprise-grade continuity and storage architectures scaled to realistic SME and startup budgets.</div>
+      <ul class="service-list">
+        <li>Consolidation and lifecycle extension of existing server hardware via virtualisation.</li>
+        <li>Hybrid Cloud and immutable local backup strategies against ransomware.</li>
+        <li>Senior technical stewardship without the cost of full-time internal headcount.</li>
+      </ul>
+      <div class="service-tags">
+        <span class="tag">SME Continuity</span>
+        <span class="tag">Hybrid Backup</span>
+        <span class="tag">SAN / NAS / VMware</span>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-name">Cross-Border On-Site Field Service (CH &amp; IT)</div>
+      <div class="service-desc">Hands-on field engineering deployed directly from Valtellina across Italian- and German-speaking Switzerland (up to 90 working days/year) and Northern Italy.</div>
+      <ul class="service-list">
+        <li>Data center rack/server build-outs, structured cabling, and hardware replacement.</li>
+        <li>On-site diagnostics, installation, and maintenance for automated machines, kiosks, smart vending, and electro-mechanical equipment (ready for OEM technical training).</li>
+        <li>Multilingual field operations: Italian, English, French, Spanish, and basic technical German.</li>
+      </ul>
+      <div class="service-tags">
+        <span class="tag">90-Day Swiss Notification</span>
+        <span class="tag">Electro-Mechanical Ready</span>
+        <span class="tag">On-Site Field Service</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cases-section">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">02 / Track Record</div>
+      <h2 class="section-title">Representative <em>SME &amp; Field Engagements</em></h2>
+    </div>
+
+    <div class="cases-grid">
+      <div class="case-card">
+        <div class="case-sector">Manufacturing &amp; Production SME</div>
+        <div class="case-title">Infrastructure Consolidation &amp; Plant Telemetry</div>
+        <div class="case-desc">Consolidated legacy server fleets through virtualisation and redundant SAN/NAS storage, while prototyping custom IoT telemetry dashboards to monitor operational parameters and prevent unplanned downtime.</div>
+      </div>
+
+      <div class="case-card">
+        <div class="case-sector">Multi-Site Commercial &amp; Logistics SME</div>
+        <div class="case-title">Hybrid Backup Hardening &amp; Access Security</div>
+        <div class="case-desc">Designed and tested resilient hybrid Cloud backup and network security architectures under strict budget constraints, integrating RFID physical access control and automated monitoring.</div>
+      </div>
+
+      <div class="case-card">
+        <div class="case-sector">Alpine Region &amp; Cross-Border Operations</div>
+        <div class="case-title">Automated Equipment &amp; On-Site Field Support</div>
+        <div class="case-desc">Delivered rapid on-site hardware diagnostics, connectivity troubleshooting, and field servicing for automated systems, self-service kiosks, and local IT infrastructure across Northern Italy and Swiss border cantons.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="contact" class="contact-section">
+  <div class="contact-band">
+    <div>
+      <h3 class="contact-headline">Planning an IoT/Automation project or need on-site field support in Switzerland or Italy?</h3>
+      <p class="contact-sub">
+        Contact me directly to discuss SME infrastructure, custom dashboards, or cross-border field engineering contracts.
+      </p>
+    </div>
+    <div class="contact-actions">
+      <a href="mailto:info@natmigliore.com" class="contact-link">✉ &nbsp; info@natmigliore.com</a>
+      <a href="tel:+447482430680" class="contact-link">☎ &nbsp; +44 748 243 0680</a>
+      <a href="https://uk.linkedin.com/in/natmigliore" target="_blank" class="contact-link">in &nbsp; LinkedIn Profile</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div>Nat Migliore · natmigliore.com</div>
+  <div>London, UK · Northern Italy (Valtellina) · Switzerland Cross-Border · EMEA</div>
+</footer>
+
+</body>
+</html>
